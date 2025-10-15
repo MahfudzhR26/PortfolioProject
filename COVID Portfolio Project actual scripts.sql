@@ -1,3 +1,6 @@
+#In this project, I downloaded data from ourworldindata.org
+#Performed the analytics as per the queries below.
+
 Select *
 FROM SQLTutorial..Covid_Deaths
 Where continent <> ' '
@@ -32,7 +35,7 @@ AND continent <> ' '
 order by 1,2
 
 
--- Looking at countrie with Highest Infection Rate compared to Population
+-- Looking at countries with Highest Infection Rate compared to Population
 -- Excluded location = Northern Cyprus, International due to its population=0, causing a MSG8134 
 
 Select location, population, MAX(total_cases) as HighestInfectionCount, MAX((total_cases/population))*100 as InfectedPercentage
@@ -171,3 +174,50 @@ Where dea.continent <> ' '
 
 Select *
 from PercentPopulationVaccinated
+
+
+----------------------------------------------------------------------------------------------------------------
+# Below are the queries for tables to be visualized in Tableau
+
+
+--1.
+
+Select  SUM(new_cases) as total_newcases, SUM(cast(new_deaths as int)) as total_newdeath, SUM(cast(new_deaths as int))/SUM(new_cases)*100 as DeathPercentage
+FROM SQLTutorial..Covid_Deaths
+--Where location like '%Malaysia%'
+Where new_cases != '0'
+And continent <> ' '
+--group by date
+order by 1,2
+
+
+--2.
+
+Select location, sum(cast(total_deaths as int)) as TotalDeathCount
+FROM SQLTutorial..Covid_Deaths
+--Where location like '%cyprus%'
+--Where population != '0'
+Where continent = ' '
+AND location not in ('World', 'European Union', 'International')
+Group by location
+order by TotalDeathCount DESC 
+
+--3.
+
+Select location, population, MAX(total_cases) as HighestInfectionCount, MAX((total_cases/population))*100 as InfectedPercentage
+FROM SQLTutorial..Covid_Deaths
+--Where location like '%cyprus%'
+Where population != '0'
+--AND continent <> ' '
+Group by location, population
+order by InfectedPercentage DESC 
+
+--4.
+
+Select location, population, date, MAX(total_cases) as HighestInfectionCount, MAX((total_cases/population))*100 as InfectedPercentage
+FROM SQLTutorial..Covid_Deaths
+--Where location like '%cyprus%'
+Where population != '0'
+--AND continent <> ' '
+Group by location, population, date
+order by InfectedPercentage DESC 
