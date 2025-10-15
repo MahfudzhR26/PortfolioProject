@@ -1,0 +1,1 @@
+Welcome to my SQL portfolio! This repository showcases a collection of SQL scripts and projects I've developed. Feel free to explore the examples and reach out if you have any questions. Mahfudzhrohaizak@gmail.com
